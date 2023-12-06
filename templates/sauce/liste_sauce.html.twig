@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ parent() }} | Liste sauce{% endblock %}
+
+{% block body %}
+    <div>
+        <h1 class="text-3xl font-bold underline m-0">
+            Liste Sauce
+        </h1>
+        <a href="{{ path('sauce_creation') }}"> + </a>
+    </div>
+
+    <div>
+        <ol>
+            {% for sauce in sauces %}
+                <li> {{ sauce.nom }} </li>
+            {% endfor %}
+        </ol>
+    </div>
+{% endblock %}

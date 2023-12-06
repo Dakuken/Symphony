@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ parent() }} | Ajout Burger{% endblock %}
+
+{% block body %}
+    <h1>
+        {{ burger.nom }}
+    </h1>
+
+    <hr/>
+
+    <div>
+        <h2>
+            {% for commentaire in commentaires %}
+                <li>
+                    {{ commentaire.texte }}
+                    {{ commentaire.note }} / 5
+                </li>
+            {% endfor %}
+        </h2>
+
+    </div>
+
+    <hr/>
+    
+    <div>
+        {{ form(form) }}
+    </div>
+{% endblock %}
