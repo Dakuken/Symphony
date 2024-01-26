@@ -686,11 +686,13 @@ video {
 
 .cases {
   border: 3px solid #008695;
-  max-height: 70px;
+  max-height: 500px;
+  max-width: 500px;
 }
 
 .word {
-  max-height: 70px;
+  max-height: 500px;
+  max-width: 500px;
 }
 
 .wrongWord{

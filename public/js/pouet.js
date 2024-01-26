@@ -51,9 +51,9 @@ function createWord() {
 const adjustWidthToHeight = () => {
     const cases = document.querySelectorAll(".cases");
     cases.forEach(caseElement => {
-        const height = caseElement.offsetHeight;
+        const height = caseElement.offsetWidth;
         console.log(height);
-        caseElement.style.width = `${height}px`; // Ajuste la largeur pour être égale à la hauteur
+        caseElement.style.height = `${height}px`; // Ajuste la largeur pour être égale à la hauteur
     });
     adjustKeyboardWeigth();
 };
