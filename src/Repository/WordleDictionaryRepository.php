@@ -26,6 +26,7 @@ class WordleDictionaryRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('w')
             ->andWhere('w.word = :val')
             ->setParameter('val', $word)
+            ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
     }

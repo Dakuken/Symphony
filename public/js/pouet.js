@@ -1,15 +1,17 @@
 const wordLength = 5;
-const maxGuess = 6;
-const word = "salut";
+const maxGuess = 3;
+const word = "chats";
 const messageWordle = document.querySelector("#messageWordle");
 let motIncorrect = false;
 let row = 0;
 let col = 1;
-
+let isPartieFinis = false;
+let isWin = false;
 let focus = [0, 0];
 
 document.addEventListener("DOMContentLoaded", () => {
     createWord();
+    listenerKeyBoard();
     window.addEventListener("resize", adjustWidthToHeight);
     window.addEventListener("keydown", (e) => {
         if (e.key === "Backspace") {
@@ -44,17 +46,29 @@ function createWord() {
         guessPlace.appendChild(wordWrapperClone); // Ajoute wordWrapper à guessPlace
     }
     adjustWidthToHeight();
-
 }
 
 const adjustWidthToHeight = () => {
     const cases = document.querySelectorAll(".cases");
     cases.forEach(caseElement => {
         const height = caseElement.offsetHeight;
+        console.log(height);
         caseElement.style.width = `${height}px`; // Ajuste la largeur pour être égale à la hauteur
     });
     adjustKeyboardWeigth();
 };
+
+function listenerKeyBoard() {
+    let keyboard = document.querySelectorAll(".keyboard");
+    keyboard.forEach(keyboard => {
+        keyboard.addEventListener("click", () => {
+            let letter = keyboard.querySelector("p").innerText;
+            addLetter(letter);
+        });
+    });
+    let erased = document.querySelector(".erased");
+    erased.addEventListener("click", removeLetter);
+}
 
 function adjustKeyboardWeigth() {
 
@@ -62,14 +76,13 @@ function adjustKeyboardWeigth() {
     let taille = refTaille.offsetWidth;
 
     let keyboard = document.querySelectorAll(".keyboard");
-    keyboard.forEach(keyboard => {
+    let keyboardArray = Array.from(keyboard);
+    keyboardArray = keyboardArray.filter((element) => element.id !== "#refTaille");
+
+    keyboardArray.forEach(keyboard => {
         keyboard.style.width = taille + "px";
         keyboard.style.height = (taille + 50) + "px";
         keyboard.style.maxHeight = 110 + "px";
-        let letter = keyboard.querySelector("p").innerText;
-        keyboard.addEventListener("click", () => {
-            addLetter(letter);
-        });
     });
 
     let wordd = document.querySelectorAll(".wordKeyboard");
@@ -83,15 +96,20 @@ function adjustKeyboardWeigth() {
     erased.style.height = (taille + 50) + "px";
     erased.style.maxHeight = 110 + "px";
     erased.addEventListener("click", removeLetter);
-
 }
 
 function addLetter(letter) {
+    if (isPartieFinis){
+        return
+    }
     currentInput().value = letter;
     nextFocus();
 }
 
 function removeLetter() {
+    if (isPartieFinis){
+        return
+    }
     previousFocus();
     if (motIncorrect) {
         removeFalseWord();
@@ -99,29 +117,39 @@ function removeLetter() {
     currentInput().value = "";
 }
 
-
 function nextFocus() {
     focus[col] = focus[col] + 1;
 
     if (focus[col] >= wordLength) {
         verifWord().then(res => {
-            console.log(res, "cest : ");
             if (res) {
                 focus[col] = 0;
                 focus[row] = focus[row] + 1;
+                verifPartieFinis()
             } else {
                 wordFalse();
             }
+            if (isPartieFinis) {
+                partieFinis();
+            }
         });
     }
+
+}
+
+function verifPartieFinis(){
     if (focus[row] >= maxGuess) {
         partieFinis();
     }
 }
 
 function partieFinis() {
-    console.log("partie finis");
-
+    if (isWin) {
+        messageWordle.textContent = "Vous avez gagné !";
+    } else {
+        messageWordle.innerHTML = `Vous avez perdu... <br> Le mot était : ${word} `;
+    }
+    motIncorrect = true;
 }
 
 function getWord() {
@@ -134,7 +162,6 @@ function getWord() {
 }
 
 function verifWord() {
-    console.log("verif word");
 
     let word = getWord();
     return fetchWord(word).then(res => {
@@ -144,22 +171,20 @@ function verifWord() {
             verifLetter(word);
             return true;
         }
-    }).catch((error) => {
-        return false;
     });
 }
 
-function verifLetter(guessword){
-    let result = []
+function verifLetter(guessword) {
+    let result = [];
 
     // Convertir les mots en tableaux de lettres
-    let guessLetters = guessword.split('');
-    let solutionLetters = word.split('');
+    let guessLetters = guessword.split("");
+    let solutionLetters = word.split("");
 
     // Marquer les lettres correctes
     for (let i = 0; i < guessLetters.length; i++) {
         if (guessLetters[i] === solutionLetters[i]) {
-            result[i] = { letter: guessLetters[i], status: 'correct' };
+            result[i] = {letter: guessLetters[i], status: "correct"};
             // Marquer cette lettre comme traitée
             solutionLetters[i] = null;
         }
@@ -171,22 +196,27 @@ function verifLetter(guessword){
         if (!result[i]) {
             let index = solutionLetters.indexOf(guessLetters[i]);
             if (index > -1) {
-                result[i] = { letter: guessLetters[i], status: 'present' };
+                result[i] = {letter: guessLetters[i], status: "present"};
                 // Marquer cette lettre comme traitée
                 solutionLetters[index] = null;
             } else {
-                result[i] = { letter: guessLetters[i], status: 'absent' };
+                result[i] = {letter: guessLetters[i], status: "absent"};
             }
         }
     }
-    console.log("result");
-    console.log(result);
-    result.forEach()
+    result.forEach((letter, index) => {
+        let input = currentRow().querySelector(`#letterWrapper${index}`);
+        input.classList.add(letter.status);
+    });
+    const isAllCorrect = result.every(item => item.status === "correct");
+    if (isAllCorrect) {
+        isPartieFinis = true;
+        isWin = true;
+    }
     return result;
 }
 
 function wordFalse() {
-    console.log("poeut");
     let cases = currentRow().querySelectorAll(".cases");
     cases.forEach(cases => {
         cases.classList.add("wrongWord");
@@ -196,7 +226,6 @@ function wordFalse() {
 }
 
 function removeFalseWord() {
-    console.log("poeut");
     let cases = currentRow().querySelectorAll(".cases");
     cases.forEach(cases => {
         cases.classList.remove("wrongWord");
@@ -226,6 +255,7 @@ function fetchWord(word) {
             return false;
         });
 }
+
 
 currentRow = () => document.querySelector(`#wrapper${focus[row]}`);
 currentCol = (el) => el.querySelector(`#letterWrapper${focus[col]}`);

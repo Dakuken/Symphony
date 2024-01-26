@@ -4,8 +4,12 @@
 
 .cases {
     border: 3px solid #008695;
+    max-height: 70px;
 }
 
+.word {
+    max-height: 70px;
+}
 .wrongWord{
     background-color: #6D376E;
 }
@@ -13,6 +17,19 @@
 .keyboard > p, .erased > p, .erased, .keyboard {
     background-color: #008695;
 }
+
+.absent {
+    background-color: #6C5C94;
+}
+
+.correct{
+    background-color: #00B290;
+}
+
+.present {
+    background-color: #D9A21B;
+}
+
 
 
 .pouet {

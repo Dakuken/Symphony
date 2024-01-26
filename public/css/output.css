@@ -544,12 +544,25 @@ video {
   --tw-backdrop-sepia:  ;
 }
 
+.mx-3 {
+  margin-left: 0.75rem;
+  margin-right: 0.75rem;
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
 .block {
   display: block;
 }
 
 .flex {
   display: flex;
+}
+
+.h-4 {
+  height: 1rem;
 }
 
 .h-\[40\%\] {
@@ -562,6 +575,10 @@ video {
 
 .h-full {
   height: 100%;
+}
+
+.w-4 {
+  width: 1rem;
 }
 
 .w-8\/12 {
@@ -580,6 +597,10 @@ video {
   -webkit-user-select: none;
      -moz-user-select: none;
           user-select: none;
+}
+
+.flex-row {
+  flex-direction: row;
 }
 
 .flex-col {
@@ -665,6 +686,11 @@ video {
 
 .cases {
   border: 3px solid #008695;
+  max-height: 70px;
+}
+
+.word {
+  max-height: 70px;
 }
 
 .wrongWord{
@@ -673,6 +699,18 @@ video {
 
 .keyboard > p, .erased > p, .erased, .keyboard {
   background-color: #008695;
+}
+
+.absent {
+  background-color: #6C5C94;
+}
+
+.correct{
+  background-color: #00B290;
+}
+
+.present {
+  background-color: #D9A21B;
 }
 
 .pouet {
@@ -685,4 +723,10 @@ video {
 
 .focus\:outline-0:focus {
   outline-width: 0px;
+}
+
+@media (min-width: 640px) {
+  .sm\:flex-row {
+    flex-direction: row;
+  }
 }
