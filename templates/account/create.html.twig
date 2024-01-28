@@ -1,0 +1,43 @@
+{% extends 'account/index.html.twig' %}
+{% block mainContent %}
+
+    <div class="flex gap-2">
+
+        <div>
+            <h1>Créer un Wordle</h1>
+
+            {{ form_start(form, {'attr': {'class': 'form-class'}}) }}
+
+            {{ form_row(form.solution, {
+                'label': 'Solution',
+                'attr': {'class': 'text-black'}
+            }) }}
+            {{ form_row(form.maxTries, {
+                'label': 'Nombre d\'essais',
+                'attr': {'class': 'text-black'}
+            }) }}
+
+            <button type="submit" class="btn-edit mb-2 rounded-lg bg-blue-700 px-5 mt-2 text-sm font-medium text-white py-2.5 me-2 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Créer</button>
+            {{ form_end(form) }}
+            
+        </div>
+        
+        <div class="wordle-list">
+            <h2>Vos Wordles</h2>
+            <ul>
+                {% for wordle in wordles %}
+                    <div class="flex items-center gap-1">
+                        <div>{{ wordle.solution }} ({{ wordle.maxTries }} essais)</div>
+                        <a href="{{ path('account_wordle_edit', {'id': wordle.id}) }}" class="btn-edit mb-2 rounded-lg bg-blue-700 px-5 mt-2 text-sm font-medium text-white py-2.5 me-2 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Modifier</a>
+                        <form action="{{ path('account_wordle_delete', {'id': wordle.id}) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce wordle ?');">
+                            <button type="submit" class="btn-delete btn-edit mb-2 rounded-lg bg-blue-700 px-5 mt-2 text-sm font-medium text-white py-2.5 me-2 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Supprimer</button>
+                        </form>
+                    </div>
+                {% else %}
+                    <li>Aucun wordle créé.</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    </div>
+{% endblock %}

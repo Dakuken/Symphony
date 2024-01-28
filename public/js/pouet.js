@@ -1,31 +1,37 @@
-const wordLength = 5;
-const maxGuess = 3;
-const word = "chats";
+let wordLength = 0;
+let maxGuess = 0;
+let word = "0";
 const messageWordle = document.querySelector("#messageWordle");
 let motIncorrect = false;
 let row = 0;
 let col = 1;
 let isPartieFinis = false;
 let isWin = false;
+
 let focus = [0, 0];
 
 document.addEventListener("DOMContentLoaded", () => {
-    createWord();
-    listenerKeyBoard();
-    window.addEventListener("resize", adjustWidthToHeight);
-    window.addEventListener("keydown", (e) => {
-        if (e.key === "Backspace") {
-            removeLetter();
-        } else if (/^[a-zA-Z]$/.test(e.key)) { // Vérifie si la touche est une lettre
-            addLetter(e.key);
-        }
+    fetchGameInfo().then(res => {
+        wordLength = res.solution.length
+        maxGuess = res.maxTries
+        word = res.solution
+        createWord();
+        listenerKeyBoard();
+        window.addEventListener("resize", adjustWidthToHeight);
+        window.addEventListener("keydown", (e) => {
+            if (e.key === "Backspace") {
+                removeLetter();
+            } else if (/^[a-zA-Z]$/.test(e.key)) { // Vérifie si la touche est une lettre
+                addLetter(e.key);
+            }
+        });
     });
 });
 
 
 let letter = `<input type="text" maxlength="1" class="w-full bg-transparent text-center text-3xl font-bold uppercase text-white focus:outline-0" disabled value="">`;
 let letterWrapper = `<div class="flex items-center justify-center rounded-md cases">${letter}</div>`;
-let wordWrapper = `<div class="flex h-full w-full max-w-4xl justify-center gap-3 word"></div>`;
+let wordWrapper = `<div class="flex h-full  w-full max-w-4xl justify-center gap-3 word"></div>`;
 
 let letterNode = new DOMParser().parseFromString(letter, "text/html").body.firstChild;
 let letterWrapperNode = new DOMParser().parseFromString(letterWrapper, "text/html").body.firstChild;
@@ -51,9 +57,8 @@ function createWord() {
 const adjustWidthToHeight = () => {
     const cases = document.querySelectorAll(".cases");
     cases.forEach(caseElement => {
-        const height = caseElement.offsetWidth;
-        console.log(height);
-        caseElement.style.height = `${height}px`; // Ajuste la largeur pour être égale à la hauteur
+        const height = caseElement.offsetHeight;
+        caseElement.style.width = `${height}px`; // Ajuste la largeur pour être égale à la hauteur
     });
     adjustKeyboardWeigth();
 };
@@ -81,7 +86,7 @@ function adjustKeyboardWeigth() {
 
     keyboardArray.forEach(keyboard => {
         keyboard.style.width = taille + "px";
-        keyboard.style.height = (taille + 50) + "px";
+        keyboard.style.height = (taille + 30) + "px";
         keyboard.style.maxHeight = 110 + "px";
     });
 
@@ -93,22 +98,22 @@ function adjustKeyboardWeigth() {
 
     let erased = document.querySelector(".erased");
     erased.style.width = taille * 2 + "px";
-    erased.style.height = (taille + 50) + "px";
+    erased.style.height = (taille + 30) + "px";
     erased.style.maxHeight = 110 + "px";
     erased.addEventListener("click", removeLetter);
 }
 
 function addLetter(letter) {
-    if (isPartieFinis){
-        return
+    if (isPartieFinis) {
+        return;
     }
     currentInput().value = letter;
     nextFocus();
 }
 
 function removeLetter() {
-    if (isPartieFinis){
-        return
+    if (isPartieFinis) {
+        return;
     }
     previousFocus();
     if (motIncorrect) {
@@ -125,7 +130,7 @@ function nextFocus() {
             if (res) {
                 focus[col] = 0;
                 focus[row] = focus[row] + 1;
-                verifPartieFinis()
+                verifPartieFinis();
             } else {
                 wordFalse();
             }
@@ -137,7 +142,7 @@ function nextFocus() {
 
 }
 
-function verifPartieFinis(){
+function verifPartieFinis() {
     if (focus[row] >= maxGuess) {
         partieFinis();
     }
@@ -254,6 +259,24 @@ function fetchWord(word) {
             console.error("Error fetching word:", error);
             return false;
         });
+}
+
+async function fetchGameInfo() {
+    const url = new URL(window.location.href);
+    const pathSegments = url.href.split("id="); // Divise l'URL en segments
+    const id = pathSegments[pathSegments.length - 1];
+    try {
+        const response = await fetch(`/loldle/symphony/public/api/wordle/${id}`);
+        if (!response.ok) {
+            throw new Error('Erreur réseau: ' + response.statusText);
+        }
+
+        const data = await response.json(); // Traite la réponse JSON
+        console.log(data); // Affiche les données JSON
+        return data;
+    } catch (error) {
+        console.error('Erreur lors de la récupération des données:', error);
+    }
 }
 
 

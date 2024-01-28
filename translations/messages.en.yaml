@@ -1,0 +1,28 @@
+# messages.en.yaml
+welcome: "Welcome to our application!"
+
+login: 'Login'
+password: 'Password'
+signUp: 'Sign up'
+signUp.notAccountClick: "Sign up"
+signUp.notAccount: "Don’t have an account yet?"
+signUp.sentence: "Sign up to your account"
+signUp.button : "Sign up"
+
+login.button: "Sign In"
+login.remember: "Remember me"
+signIn.sentence: "Sign in to your account"
+signIn.notAccount: "Already have an account?"
+forgotPassword: "Forgot password ?"
+
+good: 'The letter is in the rigth place'
+misplaced: 'The letter is in the word'
+notInWord: 'The letter is not in the word'
+
+account : 
+    myAccount : "My account"
+    disconnect : "Disconnect"
+
+home :
+    sentence : "Enter a key to participate to a wordle game"
+    button : "Play"

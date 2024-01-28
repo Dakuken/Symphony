@@ -1,0 +1,22 @@
+{# templates/account/index.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon compte{% endblock %}
+
+{% block body %}
+<div class="container flex text-xl pt-2">
+    <aside  class="w-1/4 px-4">
+        <nav>
+            <ul>
+                <li><a href="{{ path('account_create_wordle', {'_locale': app.request.locale}) }}">Mes wordles</a></li>
+                <li><a href='{{ path('account_security', {'_locale': app.request.locale}) }}'>Option de sécurité</a></li>
+            </ul>
+        </nav>
+    </aside>
+    <main class="w-3/4">
+        {% block mainContent %}
+        {% endblock %}
+    </main>
+</div>
+{% endblock %}

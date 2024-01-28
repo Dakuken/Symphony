@@ -1,0 +1,49 @@
+{% extends 'account/index.html.twig' %}
+{% block mainContent %}
+    <h2 class="text-4xl">Options de sécurité</h2>
+
+    {# Formulaire pour changer l'e-mail #}
+    <div class="pt-5">
+        <p class="text-md " >Email</p>
+        <p> {{ user.email }}</p>
+        <button  id="toggle-email-form" type="button" class="mb-2 rounded-lg bg-blue-700 px-5 mt-2 text-sm font-medium text-white py-2.5 me-2 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Modifier</button>
+    </div>
+    
+    <div id="email-form" style="display:none;">
+        {{ form_start(emailForm) }}
+        <p>Nouvel email</p>
+        {{ form_row(emailForm.email, {attr : {'class' : "text-black"}}) }}
+        <button   type="submit" class="mb-2 rounded-lg bg-blue-700 px-5 mt-2 text-sm font-medium text-white py-2.5 me-2 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Mettre à jour l'email</button>
+        {{ form_end(emailForm) }}
+    </div>
+
+    {# Formulaire pour changer le mot de passe #}
+{#    <div class="pt-5">#}
+{#        <p class="text-md " >Mot de passe</p>#}
+{#        <button  id="toggle-password-form" type="button" class="mb-2 rounded-lg bg-blue-700 px-5 mt-2 text-sm font-medium text-white py-2.5 me-2 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Modifier</button>#}
+{#    </div>#}
+
+{#    <div id="password-form" style="">#}
+{#        {{ form_start(passwordForm) }}#}
+{#        <p>Nouveau password</p>#}
+{#        {{ form_row(passwordForm.newPassword, {attr : {'class' : "text-black"}}) }}#}
+{#        <button   type="submit" class="mb-2 rounded-lg bg-blue-700 px-5 mt-2 text-sm font-medium text-white py-2.5 me-2 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Mettre à jour le mot de passe</button>#}
+{#        {{ form_end(passwordForm) }}#}
+{#    </div>#}
+
+    <script>
+        document.getElementById('toggle-email-form').addEventListener('click', function(e) {
+            let buttonText = e.target.innerText
+            e.target.innerText = (buttonText === "Modifier") ? "Annuler" : "Modifier"
+            let form = document.getElementById('email-form');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        });
+
+        // document.getElementById('toggle-password-form').addEventListener('click', function(e) {
+        //     let buttonText = e.target.innerText
+        //     e.target.innerText = (buttonText === "Modifier") ? "Annuler" : "Modifier"
+        //     let form = document.getElementById('password-form');
+        //     form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        // });
+    </script>
+{% endblock %}

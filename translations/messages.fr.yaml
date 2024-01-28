@@ -1,0 +1,28 @@
+# messages.fr.yaml
+welcome: "Bienvenue sur notre application!"
+
+login: 'Connexion'
+password: 'Mot de passe'
+signUp: 'Inscription'
+signUp.notAccountClick: "S'inscrire"
+signUp.notAccount: "Vous n'avez pas de compte ? "
+signUp.sentence: "Inscrivez-vous à votre compte"
+signUp.button : "Inscription"
+
+login.button: "Se connecter"
+login.remember: "Se souvenir de moi"
+signIn.sentence: "Connectez-vous à votre compte"
+signIn.notAccount: "Vous avez déjà un compte ?"
+forgotPassword: "Mot de passe oublié ?"
+
+good: 'La lettre est au bon endroit'
+misplaced: 'La lettre est dans le mot'
+notInWord: "La lettre n'est pas dans le mot"
+
+account :
+    myAccount : "Mon compte"
+    disconnect : "Déconnexion"
+    
+home:
+    sentence: "Entrer un Id pour commencer une partie"
+    button : "Jouer"

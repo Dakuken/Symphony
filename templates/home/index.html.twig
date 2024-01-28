@@ -1,158 +1,37 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Wordle version wish !{% endblock %}
 
 {% block body %}
 
+   <section class="h-screen">
+       <div class="flex w-full justify-end pr-4">
+           {#            <a href="{{ path('app_login', {'_locale': app.request.locale}) }}">{{ "login" | trans }}</a>#}
+           {% if app.user %}
+               <a class="mr-4" href="{{ path('account_create_wordle', {'_locale': app.request.locale}) }}">{{ "account.myAccount" | trans }}</a>
+               <a href="{{ path('app_logout', {'_locale': app.request.locale}) }}">{{ "account.disconnect" | trans }}</a>
+           {% else %}
+               <a href="{{ path('app_login', {'_locale': app.request.locale}) }}">{{ "login" | trans }}</a>
+           {% endif %}
+       </div>
+        <div class="mx-auto flex flex-col items-center justify-center px-6 py-8 md:h-[90%] lg:py-0">
 
-    <div class="flex h-full w-full flex-col items-start justify-between gap-3 px-3 pt-10">
-        <div id="guessPlace" class="flex w-full flex-col items-center justify-center gap-3 h-[50%]">
-        </div>
-
-        <div class="w-full flex justify-center flex-col items-center">
-            <p id="messageWordle" class="text-xl font-bold"></p>
-            <div class="w-full justify-center flex flex-col sm:flex-row">
-                <div class="flex flex-row mx-3 items-center">
-                    <div class="w-4 h-4 absent mr-2 "></div>
-                    <p>La lettre n'est pas dans le mot</p>
-                </div>
-                <div class="flex flex-row mx-3 items-center">
-                    <div class="w-4 h-4 present mr-2"></div>
-                    <p>La lettre est dans le mot</p>
-                </div>
-                <div class="flex flex-row mx-3 items-center">
-                    <div class="w-4 h-4 correct mr-2"></div>
-                    <p>La lettre est au bon endroit</p>
+            <div class="w-full rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 bg-[#005880] border-gray-700">
+                <div class="p-6 space-y-4 sm:p-8 md:space-y-6">
+                    <h1 class="text-xl font-bold leading-tight tracking-tight text-white md:text-2xl">
+                        {{ "home.sentence" | trans }}
+                    </h1>
+                    <form action="{{ path('wordle_play',{'_locale': app.request.locale, 'id' : 'id'})}}" method="get" class="space-y-4 md:space-y-6">
+                        <div>
+                            <input type="text" name="id" id="key" placeholder="3450" class="bg-[#008695] border border-gray-300 text-white sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500 placeholder-white" required="">
+                        </div>
+                        <button type="submit" class="w-full rounded-lg px-5 text-center text-sm font-medium text-white bg-primary-600 py-2.5 hover:bg-primary-700 focus:ring-primary-300 focus:ring-primary-800 focus:outline-none focus:ring-4">{{ "home.button" | trans }}</button>
+                    </form>
                 </div>
             </div>
         </div>
-        {#        entité fixtures form #}
+    </section>
 
-        <div id="keyboardPlace" class="flex w-full flex-col items-center justify-center gap-3 h-[40%] pb-3">
-            <div class="flex h-full w-full max-w-4xl justify-center gap-3 word wordKeyboard">
-                <div class="flex items-center justify-center rounded-md cases keyboard">
-                    <p class="w-full bg-transparent text-center select-none text-3xl font-bold uppercase text-white focus:outline-0">A
-                    </p>
-                </div>
-                <div class="flex items-center justify-center rounded-md cases keyboard">
-                    <p class="w-full bg-transparent text-center select-none text-3xl font-bold uppercase text-white focus:outline-0">Z
-                    </p>
-                </div>
-                <div class="flex items-center justify-center rounded-md cases keyboard">
-                    <p class="w-full bg-transparent text-center select-none text-3xl font-bold uppercase text-white focus:outline-0">E
-                    </p>
-                </div>
-                <div class="flex items-center justify-center rounded-md cases keyboard">
-                    <p class="w-full bg-transparent text-center select-none text-3xl font-bold uppercase text-white focus:outline-0">R
-                    </p>
-                </div>
-                <div class="flex items-center justify-center rounded-md cases keyboard">
-                    <p class="w-full bg-transparent text-center select-none text-3xl font-bold uppercase text-white focus:outline-0">T
-                    </p>
-                </div>
-                <div class="flex items-center justify-center rounded-md cases keyboard">
-                    <p class="w-full bg-transparent text-center select-none text-3xl font-bold uppercase text-white focus:outline-0">y
-                    </p>
-                </div>
-                <div class="flex items-center justify-center rounded-md cases keyboard">
-                    <p class="w-full bg-transparent text-center select-none text-3xl font-bold uppercase text-white focus:outline-0">u
-                    </p>
-                </div>
-                <div class="flex items-center justify-center rounded-md cases keyboard">
-                    <p class="w-full bg-transparent text-center select-none text-3xl font-bold uppercase text-white focus:outline-0">i
-                    </p>
-                </div>
-                <div class="flex items-center justify-center rounded-md cases keyboard">
-                    <p class="w-full bg-transparent text-center select-none text-3xl font-bold uppercase text-white focus:outline-0">o
-                    </p>
-                </div>
-                <div class="flex items-center justify-center rounded-md cases keyboard">
-                    <p class="w-full bg-transparent text-center select-none text-3xl font-bold uppercase text-white focus:outline-0">p
-                    </p>
-                </div>
-            </div>
-
-            <div class="flex h-full w-full max-w-4xl justify-center gap-3 word wordKeyboard">
-                <div class="flex items-center justify-center rounded-md cases keyboard" id="refTaille">
-                    <p class="w-full bg-transparent text-center select-none text-3xl font-bold uppercase text-white focus:outline-0">q
-                    </p>
-                </div>
-                <div class="flex items-center justify-center rounded-md cases keyboard">
-                    <p class="w-full bg-transparent text-center select-none text-3xl font-bold uppercase text-white focus:outline-0">s
-                    </p>
-                </div>
-                <div class="flex items-center justify-center rounded-md cases keyboard">
-                    <p class="w-full bg-transparent text-center select-none text-3xl font-bold uppercase text-white focus:outline-0">d
-                    </p>
-                </div>
-                <div class="flex items-center justify-center rounded-md cases keyboard">
-                    <p class="w-full bg-transparent text-center select-none text-3xl font-bold uppercase text-white focus:outline-0">f
-                    </p>
-                </div>
-                <div class="flex items-center justify-center rounded-md cases keyboard">
-                    <p class="w-full bg-transparent text-center select-none text-3xl font-bold uppercase text-white focus:outline-0">g
-                    </p>
-                </div>
-                <div class="flex items-center justify-center rounded-md cases keyboard">
-                    <p class="w-full bg-transparent text-center select-none text-3xl font-bold uppercase text-white focus:outline-0">h
-                    </p>
-                </div>
-                <div class="flex items-center justify-center rounded-md cases keyboard">
-                    <p class="w-full bg-transparent text-center select-none text-3xl font-bold uppercase text-white focus:outline-0">j
-                    </p>
-                </div>
-                <div class="flex items-center justify-center rounded-md cases keyboard">
-                    <p class="w-full bg-transparent text-center select-none text-3xl font-bold uppercase text-white focus:outline-0">k
-                    </p>
-                </div>
-                <div class="flex items-center justify-center rounded-md cases keyboard">
-                    <p class="w-full bg-transparent text-center select-none text-3xl font-bold uppercase text-white focus:outline-0">l
-                    </p>
-                </div>
-                <div class="flex items-center justify-center rounded-md cases keyboard">
-                    <p class="w-full bg-transparent text-center select-none text-3xl font-bold uppercase text-white focus:outline-0">m
-                    </p>
-                </div>
-
-
-            </div>
-
-            <div class="flex h-full w-full max-w-4xl justify-center gap-3 word wordKeyboard">
-                <div class="flex items-center justify-center rounded-md cases keyboard">
-                    <p class="w-full bg-transparent text-center select-none text-3xl font-bold uppercase text-white focus:outline-0">w
-                    </p>
-                </div>
-                <div class="flex items-center justify-center rounded-md cases keyboard">
-                    <p class="w-full bg-transparent text-center select-none text-3xl font-bold uppercase text-white focus:outline-0">x
-                    </p>
-                </div>
-                <div class="flex items-center justify-center rounded-md cases keyboard">
-                    <p class="w-full bg-transparent text-center select-none text-3xl font-bold uppercase text-white focus:outline-0">c
-                    </p>
-                </div>
-                <div class="flex items-center justify-center rounded-md cases keyboard">
-                    <p class="w-full bg-transparent text-center select-none text-3xl font-bold uppercase text-white focus:outline-0">v
-                    </p>
-                </div>
-                <div class="flex items-center justify-center rounded-md cases keyboard">
-                    <p class="w-full bg-transparent text-center select-none text-3xl font-bold uppercase text-white focus:outline-0">b
-                    </p>
-                </div>
-                <div class="flex items-center justify-center rounded-md cases keyboard">
-                    <p class="w-full bg-transparent text-center select-none text-3xl font-bold uppercase text-white focus:outline-0">n
-                    </p>
-                </div>
-
-
-                <div class="flex items-center justify-center rounded-md cases  erased">
-                    {#                    <p type="text" maxlength="1" class="w-full bg-transparent text-center text-3xl font-bold uppercase text-white focus:outline-0 p-3" disabled value="n"> #}
-                    <img src="{{ asset('image/effacer.png') }}" class="white-icon w-8/12 select-none" alt="image effacer">
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="{{ asset('js/pouet.js') }}"></script>
 {% endblock %}
 
 {# {{ encore_entry_script_tags('home') }} #}

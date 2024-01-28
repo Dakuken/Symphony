@@ -1,0 +1,42 @@
+{% extends 'base-connexion.html.twig' %}
+{% block title %}Inscription{% endblock %}
+{% block inscription %}
+    <section class="">
+        <div class="mx-auto flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0">
+            <div class="w-full rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 bg-[#005880] border-gray-700">
+                <div class="p-6 space-y-4 sm:p-8 md:space-y-6">
+                    <h1 class="text-xl font-bold leading-tight tracking-tight text-white md:text-2xl">
+                        {{ "signUp.sentence" | trans }}
+                    </h1>
+
+                    {{ form_start(form) }}
+                    <div class="space-y-4 md:space-y-6">
+                        <div>
+                            {#                            <label for="email" class="mb-2 block text-sm font-medium text-white">Email</label> #}
+                            {{ form_row(form.email, {'attr' : {'class' : 'bg-[#008695] border border-gray-300 text-white sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  focus:ring-blue-500 focus:border-blue-500 placeholder-white'}}) }}
+                        </div>
+                        <div>
+                            {#                            <label for="password" class="mb-2 block text-sm font-medium text-white">{{ "password" | trans }}</label> #}
+                            {{ form_row(form.password, {'attr' : {'class' : 'bg-[#008695] border border-gray-300 text-white sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500 placeholder-white'}}) }}
+                        </div>
+                        {% if error %}
+                            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                        {% endif %}
+                        {#                        <button type="submit" class="w-full rounded-lg px-5 text-center text-sm font-medium text-white bg-primary-600 py-2.5 hover:bg-primary-700 focus:ring-primary-300 focus:ring-primary-800 focus:outline-none focus:ring-4">{{ "signUp.button" | trans }}</button> #}
+                        {{ form_row(form.submit, {'attr' : {'class' : 'w-full rounded-lg px-5 text-center text-sm font-medium text-white bg-primary-600 py-2.5 hover:bg-primary-700 focus:ring-primary-300 focus:ring-primary-800 focus:outline-none focus:ring-4'}}) }}
+                        <p class="text-sm font-light text-gray-400">
+                            {{ "signIn.notAccount" | trans }} <a href="{{ path('app_login', {'_locale': app.request.locale}) }}" class="font-medium text-primary-600 text-primary-500 hover:underline">{{ "login.button" | trans }}</a>
+                        </p>
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </section>
+    {% for flash_message in app.flashes('success') %}
+        <div class="alert alert-success">{{ flash_message }}</div>
+    {% endfor %}
+
+
+
+{% endblock %}

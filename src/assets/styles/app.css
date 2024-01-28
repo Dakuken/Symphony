@@ -2,20 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+html{
+    touch-action: manipulation;
+}
+
 .cases {
     border: 3px solid #008695;
 }
-
 .word {
-    max-height: 500px;
-    max-width: 500px;/
+    max-height: 150px;
 }
+
 .wrongWord{
     background-color: #6D376E;
 }
 
 .keyboard > p, .erased > p, .erased, .keyboard {
     background-color: #008695;
+}
+
+.keyboard{
+    max-height: 100px;
 }
 
 .absent {
